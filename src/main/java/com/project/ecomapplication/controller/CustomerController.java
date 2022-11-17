@@ -15,7 +15,7 @@ public class CustomerController {
 
     @GetMapping("login")
     public String display(){
-        return "WELCOME TO SPRING BOOT";
+        return "WELCOME TO ECOMAPPLICATION";
     }
 
 

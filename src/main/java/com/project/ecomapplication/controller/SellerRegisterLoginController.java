@@ -55,7 +55,7 @@ public class SellerRegisterLoginController {
     @PostMapping("register")
     public ResponseEntity<String> register(@RequestBody RegisterDTO registerDto) {
         if (userRepository.existsByemail(registerDto.getEmail())) {
-            return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
         }
 
         Seller user = new Seller();
