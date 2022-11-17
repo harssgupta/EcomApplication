@@ -28,7 +28,7 @@ public class Bootstrap implements ApplicationRunner {
 
         if (userRepository.count() < 1) {
             UserEntity user = new UserEntity();
-            user.setUsername("Harsh_TTN");
+            user.setUsername("HarshGuptaTTN");
             user.setFirstName("Harsh");
             user.setMiddleName("Kumar");
             user.setLastName("Gupta");
