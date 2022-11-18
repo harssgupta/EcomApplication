@@ -10,7 +10,7 @@ import com.project.ecomapplication.repository.SellerRepository;
 import com.project.ecomapplication.repository.UserRepository;
 import com.project.ecomapplication.security.JWTGenerator;
 
-import com.project.ecomapplication.services.EmailSenderService;
+import com.project.ecomapplication.services.EmailSenderServices;
 import com.project.ecomapplication.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -47,7 +47,7 @@ public class SellerRegisterLoginController {
     private JWTGenerator jwtGenerator;
 
     @Autowired
-    private EmailSenderService emailSenderService;
+    private EmailSenderServices emailSenderService;
 
 
 

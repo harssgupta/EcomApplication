@@ -6,10 +6,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.util.logging.Logger;
-
 @Service
-public class EmailSenderService {
+public class EmailSenderServices {
 
     @Autowired
     private JavaMailSender javaMailSender;

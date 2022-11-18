@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
-@RequestMapping(value = "/entry")
+@RequestMapping(value = "/customer")
 public class CustomerController {
 
 
