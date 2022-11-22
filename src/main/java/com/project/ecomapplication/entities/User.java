@@ -38,7 +38,7 @@ public class User {
      @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
      private List<Address> addresses;
 
-     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)//want to fetch everything
+     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)//want to fetch everything
      @JoinTable(name="user_role",joinColumns = @JoinColumn(name="userID" ,referencedColumnName = "id"),
              inverseJoinColumns = @JoinColumn(name="roleID",referencedColumnName = "id"))
      private List<Roles> roles;

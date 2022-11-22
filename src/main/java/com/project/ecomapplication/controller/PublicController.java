@@ -6,13 +6,15 @@ import com.project.ecomapplication.dto.SignupCustomerDao;
 import com.project.ecomapplication.dto.SignupSellerDao;
 import com.project.ecomapplication.exceptions.TokenRefreshException;
 import com.project.ecomapplication.entities.*;
-import com.project.ecomapplication.exceptions.email.EmailSender;
 import com.project.ecomapplication.registrationconfig.RegistrationService;
 import com.project.ecomapplication.repository.*;
 import com.project.ecomapplication.security.JwtUtils;
+import com.project.ecomapplication.services.EmailService;
 import com.project.ecomapplication.services.RefreshTokenService;
 import com.project.ecomapplication.services.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +34,7 @@ import java.util.Date;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/public")
+@RequestMapping("/api")
 @Slf4j
 public class PublicController {
 
@@ -53,7 +55,7 @@ public class PublicController {
     @Autowired
     RegistrationService registrationService;
     @Autowired
-    EmailSender emailSender;
+    EmailService emailService;
     @Autowired
     RefreshTokenService refreshTokenService;
     @Autowired
@@ -63,6 +65,8 @@ public class PublicController {
     @Autowired
     AccessTokenRepository accessTokenRepository;
 
+    Logger logger = LoggerFactory.getLogger(PublicController.class);
+
     @GetMapping("/home")
     public ResponseEntity<?> welcomeHome() {
         return ResponseEntity.ok("Welcome to EcommerceSite!!");
@@ -71,11 +75,12 @@ public class PublicController {
 
     @PostMapping("/register/customer")
     public ResponseEntity<?> registerAsCustomer(@Valid @RequestBody SignupCustomerDao signupCustomerDao) {
+
         if (userRepository.existsByEmail(signupCustomerDao.getEmail())) {
             return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
         }
 
-        User user = new User();
+        Customer user = new Customer();
         user.setFirstName(signupCustomerDao.getFirstName());
         user.setEmail(signupCustomerDao.getEmail());
         user.setPassword(passwordEncoder.encode(signupCustomerDao.getPassword()));
@@ -86,23 +91,25 @@ public class PublicController {
         user.setIsLocked(false);
         user.setInvalidAttemptCount(0);
 
-        Customer customer = new Customer(user, signupCustomerDao.getContact());
 
         Roles roles = roleRepository.findByAuthority("ROLE_CUSTOMER").get();
         user.setRoles(Collections.singletonList(roles));
 
-        customerRepository.save(customer);
-        userRepository.save(user);
+        customerRepository.save(user);
 
-
+        System.out.printf(user.getPassword());
         String token = registrationService.generateToken(user);
+        emailService.setSubject("Your Account || " + user.getFirstName() + " finish setting up your new  Account ");
 
-        String link = "http://localhost:8080/api/auth/confirm?token="+token;
-        emailSender.send(signupCustomerDao.getEmail(), registrationService.buildEmail(signupCustomerDao.getFirstName(), link));
-        return new ResponseEntity<>(
-                "Customer Registered Successfully!\nHere is your activation token use it with in 3 hours\n"+token,
-                HttpStatus.CREATED
-        );
+        emailService.setToEmail(user.getEmail());
+        emailService.setMessage("Click on the link to Activate Your Account \n"
+                + "127.0.0.1:8080/home/confirm/" + user.getEmail() + "/" + token);
+
+        logger.info("------------" + token + "-----------------");
+        emailService.sendEmail();
+
+
+        return new ResponseEntity<>("Customer Registered Successfully!Activate Your Account within 3 hours", HttpStatus.CREATED);
     }
 
     @PostMapping("/register/seller")
@@ -111,7 +118,7 @@ public class PublicController {
             return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
         }
 
-        User user = new User();
+        Seller user = new Seller();
         user.setFirstName(signupSellerDao.getFirstName());
         user.setEmail(signupSellerDao.getEmail());
         user.setPassword(passwordEncoder.encode(signupSellerDao.getPassword()));
@@ -122,20 +129,18 @@ public class PublicController {
         user.setIsLocked(false);
         user.setInvalidAttemptCount(0);
 
-        Seller seller = new Seller(user, signupSellerDao.getGstNumber(), signupSellerDao.getCompanyContact(), signupSellerDao.getCompanyName());
 
         Roles roles = roleRepository.findByAuthority("ROLE_SELLER").get();
         user.setRoles(Collections.singletonList(roles));
-
-        userRepository.save(user);
-        sellerRepository.save(seller);
+        sellerRepository.save(user);
+        String token = registrationService.generateToken(user);
 
         //Custom email testing part
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setSubject("Account Created");
         mailMessage.setText("Congratulations, Your account has been created as Seller.\nContact Admin to activate your account, Thanks.");
         mailMessage.setTo(user.getEmail());
-        mailMessage.setFrom("sharda.kumari@tothenew.com");
+        mailMessage.setFrom("yourharshh@gmail.com");
         Date date = new Date();
         mailMessage.setSentDate(date);
         try {
@@ -149,8 +154,9 @@ public class PublicController {
                 HttpStatus.CREATED);
     }
 
+
     @PostMapping("/admin/login")
-    public ResponseEntity<?> loginAsAdmin(@Valid @RequestBody LoginDao loginDao){
+    public ResponseEntity<?> loginAsAdmin(@Valid @RequestBody LoginDao loginDao) {
 
         User user = userRepository.findUserByEmail(loginDao.getEmail());
 
@@ -165,7 +171,7 @@ public class PublicController {
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
             refreshTokenRepository.save(refreshToken);
             String welcomeMessage = "Admin logged in Successfully!!";
-            return new ResponseEntity<>(welcomeMessage +"\nAccess Token: "+ accessToken.getToken()+"\nRefresh Token: "+refreshToken.getToken(), HttpStatus.OK);
+            return new ResponseEntity<>(welcomeMessage + "\nAccess Token: " + accessToken.getToken() + "\nRefresh Token: " + refreshToken.getToken(), HttpStatus.OK);
 
         } else {
 
@@ -176,7 +182,7 @@ public class PublicController {
     }
 
     @PostMapping("/customer/login")
-    public ResponseEntity<?> loginAsCustomer(@Valid @RequestBody LoginDao loginDao){
+    public ResponseEntity<?> loginAsCustomer(@Valid @RequestBody LoginDao loginDao) {
 
         User user = userRepository.findUserByEmail(loginDao.getEmail());
 
@@ -191,7 +197,7 @@ public class PublicController {
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
             refreshTokenRepository.save(refreshToken);
             String welcomeMessage = "Customer logged in Successfully!!";
-            return new ResponseEntity<>(welcomeMessage +"\nAccess Token: "+ accessToken.getToken()+"\nRefresh Token: "+refreshToken.getToken(), HttpStatus.OK);
+            return new ResponseEntity<>(welcomeMessage + "\nAccess Token: " + accessToken.getToken() + "\nRefresh Token: " + refreshToken.getToken(), HttpStatus.OK);
 
         } else {
 
@@ -201,9 +207,11 @@ public class PublicController {
     }
 
     @PostMapping("/seller/login")
-    public ResponseEntity<?> loginAsSeller(@Valid @RequestBody LoginDao loginDao){
+    public ResponseEntity<?> loginAsSeller(@Valid @RequestBody LoginDao loginDao) {
 
         User user = userRepository.findUserByEmail(loginDao.getEmail());
+
+//        return new ResponseEntity<User>(user,HttpStatus.OK);
 
         if (userRepository.isUserActive(user.getId())) {
 
@@ -216,7 +224,7 @@ public class PublicController {
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
             refreshTokenRepository.save(refreshToken);
             String welcomeMessage = "Seller logged in Successfully!!";
-            return new ResponseEntity<>(welcomeMessage +"\nAccess Token: "+ accessToken.getToken()+"\nRefresh Token: "+refreshToken.getToken(), HttpStatus.OK);
+            return new ResponseEntity<>(welcomeMessage + "\nAccess Token: " + accessToken.getToken() + "\nRefresh Token: " + refreshToken.getToken(), HttpStatus.OK);
 
         } else {
 
@@ -225,8 +233,6 @@ public class PublicController {
         }
 
     }
-
-
 
     @PostMapping("/refresh-token")
     public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
@@ -238,7 +244,7 @@ public class PublicController {
                     String token = jwtUtils.generateTokenFromUsername(user.getEmail());
                     AccessToken accessToken = new AccessToken(token, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15), user);
                     accessTokenRepository.save(accessToken);
-                    return new ResponseEntity<>("New Access Token: "+accessToken.getToken()+"\nRefresh Token: "+requestRefreshToken, HttpStatus.OK);
+                    return new ResponseEntity<>("New Access Token: " + accessToken.getToken() + "\nRefresh Token: " + requestRefreshToken, HttpStatus.OK);
                 })
                 .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
                         "Refresh token is not in database!"));
@@ -249,10 +255,6 @@ public class PublicController {
         return registrationService.confirmToken(token);
     }
 
-    @PostMapping(path = "/customer/confirm")
-    public String confirmByEmail(@RequestParam("email") String email) {
-        return registrationService.confirmByEmail(email);
-    }
-
-
 }
+
+

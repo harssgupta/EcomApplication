@@ -33,7 +33,6 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
 //                        Joiner.on(",").join(validator.getMessages(result)))
 //                .addConstraintViolation();
 //        return false;
-
         List<String> messages = validator.getMessages(result);
 
         String messageTemplate = String.join(",", messages);

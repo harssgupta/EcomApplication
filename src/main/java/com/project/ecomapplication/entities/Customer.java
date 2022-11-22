@@ -17,7 +17,5 @@ public class Customer extends User {
 
     private String contact;
 
-    public Customer(User user, String contact) {
 
-    }
 }

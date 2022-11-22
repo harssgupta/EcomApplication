@@ -45,35 +45,39 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder()
+    {
         return new BCryptPasswordEncoder();
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and().authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/api/admin/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PATCH, "/api/admin/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/customer/**").hasRole("CUSTOMER")
-                .antMatchers(HttpMethod.PUT, "/api/customer/**").hasRole("CUSTOMER")
-                .antMatchers(HttpMethod.POST, "/api/customer/**").hasRole("CUSTOMER")
-                .antMatchers(HttpMethod.DELETE, "/api/customer/**").hasRole("CUSTOMER")
-                .antMatchers(HttpMethod.GET, "/api/seller/**").hasRole("SELLER")
-                .antMatchers(HttpMethod.PUT, "/api/seller/**").hasRole("SELLER")
-                .antMatchers(HttpMethod.POST, "/api/category/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/api/category/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.GET, "/api/category/**").hasAnyRole("ADMIN", "SELLER", "CUSTOMER")
-                .antMatchers(HttpMethod.POST, "/api/product/**").hasRole("SELLER")
-                .antMatchers(HttpMethod.DELETE, "/api/product/**").hasRole("SELLER")
-                .antMatchers(HttpMethod.PUT, "/api/product/update-product").hasRole("SELLER")
-                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
-                .logoutSuccessUrl("/api/auth/home")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID");
+
+                .antMatchers(HttpMethod.GET, "/api/admin/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/admin/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/admin/**").permitAll()
+
+                .antMatchers(HttpMethod.GET, "/api/customer/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/customer/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/customer/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/seller/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/seller/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/api/seller/**").permitAll();
+             //   .antMatchers(HttpMethod.POST, "/api/category/**").hasRole("ADMIN")
+             //   .antMatchers(HttpMethod.PUT, "/api/category/**").hasRole("ADMIN")
+               // .antMatchers(HttpMethod.GET, "/api/category/**").hasAnyRole("ADMIN", "SELLER", "CUSTOMER")
+            //    .antMatchers(HttpMethod.POST, "/api/product/**").hasRole("SELLER")
+              //  .antMatchers(HttpMethod.DELETE, "/api/product/**").hasRole("SELLER")
+             //   .antMatchers(HttpMethod.PUT, "/api/product/update-product").hasRole("SELLER")
+             //   .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
+              //  .logoutSuccessUrl("/api/logout")
+             //   .invalidateHttpSession(true)
+        //   .deleteCookies("JSESSIONID");
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

@@ -1,4 +1,5 @@
 package com.project.ecomapplication.entities;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "seller")
 @PrimaryKeyJoinColumn(name = "user_id")
+@AllArgsConstructor
 public class Seller extends User {
 
    //private Integer userId foreign key
@@ -21,7 +23,5 @@ public class Seller extends User {
     private String companyName;
 
 
- public Seller(User user, String gstNumber, String companyContact, String companyName) {
 
- }
 }

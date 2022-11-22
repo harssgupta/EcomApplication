@@ -79,7 +79,7 @@ public class CustomerService {
             mailMessage.setSubject("Password Changed");
             mailMessage.setText("ALERT!, Your account's password has been changed, If it was not you contact Admin asap.\nStay Safe, Thanks.");
             mailMessage.setTo(user.getEmail());
-            mailMessage.setFrom("sharda.kumari@tothenew.com");
+            mailMessage.setFrom("yourharshh@gmail.com");
             Date date = new Date();
             mailMessage.setSentDate(date);
             try {

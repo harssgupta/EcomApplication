@@ -67,7 +67,7 @@ public class PasswordResetTokenService {
                 mailMessage.setSubject("Password Reset");
                 mailMessage.setText("ALERT!, Your account password has been reset, If it was not you contact Admin asap.\nStay Safe, Thanks.");
                 mailMessage.setTo(user.getEmail());
-                mailMessage.setFrom("sharda.kumari@tothenew.com");
+                mailMessage.setFrom("yourharshh@gmail.com");
                 Date date = new Date();
                 mailMessage.setSentDate(date);
                 try {
@@ -116,7 +116,7 @@ public class PasswordResetTokenService {
                     +"\nLink will expire after 15 minutes."
                     +"\nEnjoy.");
             mailMessage.setTo(user.getEmail());
-            mailMessage.setFrom("sharda.kumari@tothenew.com");
+            mailMessage.setFrom("yourharshh@gmail.com.com");
             Date date = new Date();
             mailMessage.setSentDate(date);
             try {
@@ -140,7 +140,7 @@ public class PasswordResetTokenService {
                     +"\nLink will expire after 15 minutes."
                     +"\nEnjoy.");
             mailMessage.setTo(user.getEmail());
-            mailMessage.setFrom("sharda.kumari@tothenew.com");
+            mailMessage.setFrom("yourharshh@gmail.com");
             Date date = new Date();
             mailMessage.setSentDate(date);
             try {

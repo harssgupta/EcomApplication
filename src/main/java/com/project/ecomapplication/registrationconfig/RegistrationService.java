@@ -65,11 +65,20 @@ public class RegistrationService {
         }
         confirmationTokenService.setConfirmedAt(token);
         userService.enableUser(confirmationToken.getUser().getEmail());
+
+
+
+        User user = userRepository.findUserByEmail(confirmationToken.getUser().getEmail());
+        if(user!=null){
+            user.setIsActive(true);
+
+        }
+
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setSubject("Account Activated");
         mailMessage.setText("Congratulations, Your account has been activated, Enjoy.");
         mailMessage.setTo(confirmationToken.getUser().getEmail());
-        mailMessage.setFrom("sharda.kumari@tothenew.com");
+        mailMessage.setFrom("yourharshh@gmail.com");
         Date date = new Date();
         mailMessage.setSentDate(date);
         try {
@@ -96,7 +105,7 @@ public class RegistrationService {
             mailMessage.setText("Here is your fresh activation link, it is valid for only 15 minutes.\n"+
                     "http://localhost:8080/api/auth/confirm?token="+token);
             mailMessage.setTo(confirmationToken.getUser().getEmail());
-            mailMessage.setFrom("sharda.kumari@tothenew.com");
+            mailMessage.setFrom("yourharshh@gmail.com");
             Date date = new Date();
             mailMessage.setSentDate(date);
             try {
@@ -124,7 +133,7 @@ public class RegistrationService {
                 mailMessage.setSubject("Account Activated by Admin");
                 mailMessage.setText("Your account has been activated by Admin, Enjoy.:)");
                 mailMessage.setTo(user.getEmail());
-                mailMessage.setFrom("sharda.kumari@tothenew.com");
+                mailMessage.setFrom("yourharshh@gmail.com");
                 Date date = new Date();
                 mailMessage.setSentDate(date);
                 try {
@@ -157,7 +166,7 @@ public class RegistrationService {
                 mailMessage.setSubject("Account De-activated by Admin");
                 mailMessage.setText("Your account has been de-activated by Admin.\nKindly contact admin to activate your account, Thanks.");
                 mailMessage.setTo(user.getEmail());
-                mailMessage.setFrom("sharda.kumari@tothenew.com");
+                mailMessage.setFrom("yourharshh@gmail.com");
                 Date date = new Date();
                 mailMessage.setSentDate(date);
                 try {

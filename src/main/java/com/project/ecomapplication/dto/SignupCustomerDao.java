@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.*;
 
 @Data
-@PasswordMatchesForCustomer
+//@PasswordMatchesForCustomer
 public class SignupCustomerDao {
     private String firstName;
     private String lastName;
