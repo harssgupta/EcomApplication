@@ -35,8 +35,7 @@ public class Bootstrap implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-       // List<Roles> roles = new ArrayList<>();
-
+        // List<Roles> roles = new ArrayList<>();
 
 
         Roles role1 = new Roles();
@@ -54,20 +53,19 @@ public class Bootstrap implements CommandLineRunner {
 
 
         System.out.println("Total users saved::" + userRepository.count());
-
-//        if (userRepository.count() < 1) {
-        User user = new User();
-        user.setFirstName("Harsh");
-        user.setMiddleName("Kumar");
-        user.setLastName("Gupta");
-        user.setEmail("harshgupta6201@gmail.com");
+        if (userRepository.count() < 1) {
+            User user = new User();
+            user.setFirstName("Harsh");
+            user.setMiddleName("Kumar");
+            user.setLastName("Gupta");
+            user.setEmail("harshgupta6201@gmail.com");
 //            user.setMobile(9718122312L);
-        user.setPassword(passwordEncoder.encode("Admin@123"));
+            user.setPassword(passwordEncoder.encode("Admin@123"));
 //        user.setInvalidAttemptCount(3);
 //
-        user.setIsActive(true);
-        user.setIsLocked(false);
-        user.setIsDeleted(false);
+            user.setIsActive(true);
+            user.setIsLocked(false);
+            user.setIsDeleted(false);
 //
 //        List<Address> addresses = new ArrayList<>();
 //        Address address = new Address();
@@ -90,9 +88,10 @@ public class Bootstrap implements CommandLineRunner {
 //        logger.info(role.getId()+"--------------------"+role.getAuthority());
 
 //        Roles roles = roleRepository.findByAuthority("ROLE_ADMIN").get();
-        user.setRoles(Arrays.asList(roleRepository.findByAuthority("ROLE_ADMIN").get()));
-        userRepository.save(user);
+            user.setRoles(Arrays.asList(roleRepository.findByAuthority("ROLE_ADMIN").get()));
+            userRepository.save(user);
 
 
+        }
     }
 }

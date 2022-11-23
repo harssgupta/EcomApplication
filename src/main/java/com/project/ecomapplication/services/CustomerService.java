@@ -195,7 +195,6 @@ public class CustomerService {
             log.info("User exists.");
             User user = userRepository.findUserByEmail(accessToken.getUser().getEmail());
             user.setFirstName(updateCustomerDto.getFirstName());
-            user.setMiddleName(updateCustomerDto.getMiddleName());
             user.setLastName(updateCustomerDto.getLastName());
             user.setEmail(updateCustomerDto.getEmail());
             Customer customer = customerRepository.getCustomerByUserId(user.getId());

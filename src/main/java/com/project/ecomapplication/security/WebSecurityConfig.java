@@ -67,17 +67,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/api/customer/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/seller/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/seller/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/api/seller/**").permitAll();
+                .antMatchers(HttpMethod.PUT, "/api/seller/**").permitAll()
+                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
+                .logoutSuccessUrl("/api/home")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+}
+
              //   .antMatchers(HttpMethod.POST, "/api/category/**").hasRole("ADMIN")
              //   .antMatchers(HttpMethod.PUT, "/api/category/**").hasRole("ADMIN")
                // .antMatchers(HttpMethod.GET, "/api/category/**").hasAnyRole("ADMIN", "SELLER", "CUSTOMER")
             //    .antMatchers(HttpMethod.POST, "/api/product/**").hasRole("SELLER")
               //  .antMatchers(HttpMethod.DELETE, "/api/product/**").hasRole("SELLER")
              //   .antMatchers(HttpMethod.PUT, "/api/product/update-product").hasRole("SELLER")
-             //   .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
-              //  .logoutSuccessUrl("/api/logout")
-             //   .invalidateHttpSession(true)
-        //   .deleteCookies("JSESSIONID");
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    }
-}
+

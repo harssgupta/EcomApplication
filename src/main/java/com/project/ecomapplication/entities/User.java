@@ -43,5 +43,9 @@ public class User {
              inverseJoinColumns = @JoinColumn(name="roleID",referencedColumnName = "id"))
      private List<Roles> roles;
 
+     @Lob
+     private byte[] image;
 
 }
+
+

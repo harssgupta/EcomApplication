@@ -16,3 +16,4 @@ public @interface ValidPassword {
 
     Class<? extends Payload>[] payload() default {};
 }
+
