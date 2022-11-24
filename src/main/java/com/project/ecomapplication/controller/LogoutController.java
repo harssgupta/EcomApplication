@@ -31,12 +31,12 @@ public class LogoutController {
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
             String tokenValue = bearerToken.substring(7, bearerToken.length());
             System.out.println(tokenValue);
-            TokenDelete tokenDelete = new TokenDelete();
+            /*TokenDelete tokenDelete = new TokenDelete();
             Optional<RefreshToken> token=refreshTokenRepository.findByToken(refreshToken);
             tokenDelete.setToken(token.get().getToken());
             tokenDelete.setUser(token.get().getUser());
             tokenDeleteRepository.save(tokenDelete);
-            refreshTokenRepository.deleteByToken(tokenValue);
+            refreshTokenRepository.deleteByToken(tokenValue);*/
         }
         return "Logged out successfully";
     }

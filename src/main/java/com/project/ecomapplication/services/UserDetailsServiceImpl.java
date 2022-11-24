@@ -21,8 +21,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public static final int MAX_FAILED_ATTEMPTS = 3;
 
-
-
     @Autowired
     UserRepository userRepository;
     @Autowired

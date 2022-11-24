@@ -29,6 +29,7 @@ public class User {
      private Boolean isLocked;
      private Integer invalidAttemptCount;
      private LocalDateTime passwordUpdateDate;
+
      private String passwordResetToken;
      private LocalDateTime tokenCreationDate;
      private int failedAttempt;

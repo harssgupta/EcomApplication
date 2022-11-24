@@ -11,7 +11,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RefreshTokenService {
+public class
+RefreshTokenService {
 
     @Value("${harsh.app.jwtRefreshExpirationMs}")
     private Long refreshTokenDurationMs;
@@ -29,8 +30,8 @@ public class RefreshTokenService {
         refreshToken.setUser(userRepository.findById(userId).get());
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
-        refreshToken = refreshTokenRepository.save(refreshToken);
-        return refreshToken;
+        RefreshToken newToken = refreshTokenRepository.save(refreshToken);
+        return newToken;
     }
 
     public RefreshToken verifyExpiration(RefreshToken token) {

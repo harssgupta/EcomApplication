@@ -254,6 +254,11 @@ public class PublicController {
     public String confirm(@RequestParam("token") String token) {
         return registrationService.confirmToken(token);
     }
+    @PostMapping(path = "/customer/confirm")
+    public String confirmByEmail(@RequestParam("email") String email) {
+        return registrationService.confirmByEmail(email);
+    }
+
 
 }
 
