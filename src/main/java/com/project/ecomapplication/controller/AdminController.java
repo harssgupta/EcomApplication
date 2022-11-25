@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/api/admin")
 public class AdminController {
 
+
     @Autowired
     RegistrationService registrationService;
     @Autowired

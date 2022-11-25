@@ -1,9 +1,8 @@
 package com.project.ecomapplication.controller;
 
-import com.project.ecomapplication.entities.AccessToken;
+
 import com.project.ecomapplication.entities.RefreshToken;
 import com.project.ecomapplication.entities.TokenDelete;
-import com.project.ecomapplication.repository.AccessTokenRepository;
 import com.project.ecomapplication.repository.RefreshTokenRepository;
 import com.project.ecomapplication.repository.TokenDeleteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +28,14 @@ public class LogoutController {
     public String logout(@RequestParam("token") String refreshToken, HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
-            String tokenValue = bearerToken.substring(7, bearerToken.length());
+            String tokenValue = bearerToken.substring(7,bearerToken.length());
             System.out.println(tokenValue);
-            /*TokenDelete tokenDelete = new TokenDelete();
+            TokenDelete tokenDelete = new TokenDelete();
             Optional<RefreshToken> token=refreshTokenRepository.findByToken(refreshToken);
             tokenDelete.setToken(token.get().getToken());
             tokenDelete.setUser(token.get().getUser());
             tokenDeleteRepository.save(tokenDelete);
-            refreshTokenRepository.deleteByToken(tokenValue);*/
+            refreshTokenRepository.deleteByToken(tokenValue);
         }
         return "Logged out successfully";
     }

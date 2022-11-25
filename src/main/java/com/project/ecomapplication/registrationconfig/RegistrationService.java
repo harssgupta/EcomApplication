@@ -103,7 +103,7 @@ public class RegistrationService {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setSubject("Re-activation Link");
             mailMessage.setText("Here is your fresh activation link, it is valid for only 15 minutes.\n"+
-                    "http://localhost:8080/api/auth/confirm?token="+token);
+                    "http://localhost:8080/api/confirm?token="+token);
             mailMessage.setTo(confirmationToken.getUser().getEmail());
             mailMessage.setFrom("yourharshh@gmail.com");
             Date date = new Date();

@@ -28,7 +28,7 @@ public class SignupCustomerDao {
     @ValidPassword
     private String password;
 
-    @NotNull
+    @NotNull(message = "Password cannot be empty")
     @NotBlank(message = "Password cannot be empty")
     @Size(min = 8, max = 16, message = "Password should be same to Password")
     private String confirmPassword;

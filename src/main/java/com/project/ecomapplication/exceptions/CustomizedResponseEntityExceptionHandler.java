@@ -1,10 +1,13 @@
 package com.project.ecomapplication.exceptions;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestController
@@ -24,6 +27,10 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     @ExceptionHandler(value = {TokenExpiredException.class})
     public ResponseEntity<Object> handleTokenExpiredException(TokenExpiredException e) {
         return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+    }
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return this.handleExceptionInternal(ex, (Object)null, headers, status, request);
     }
 
 //    @ExceptionHandler(value = {InvalidEmailException.class})

@@ -66,30 +66,24 @@ public class Bootstrap implements CommandLineRunner {
             user.setIsActive(true);
             user.setIsLocked(false);
             user.setIsDeleted(false);
-//
-//        List<Address> addresses = new ArrayList<>();
-//        Address address = new Address();
-//        address.setCity("Lucknow");
-//        address.setCountry("India");
-//        address.setLabel("HomeTown");
-//        address.setState("UP");
-//        address.setZipcode("261505");
-//        addresses.add(address);
-//
-//        address.setUser(user);
-//
-//        user.setAddresses(addresses);
-//
-//        user.setRoles(Arrays.asList(roleRepository.findByAuthority("ROLE_ADMIN").get()));
-//
-//        userRepository.save(user);
 
-//        Roles role = roleRepository.findByAuthority("ROLE_ADMIN").get();
-//        logger.info(role.getId()+"--------------------"+role.getAuthority());
+         List<Address> addresses = new ArrayList<>();
+         Address address = new Address();
+          address.setCity("Lucknow");
+          address.setCountry("India");
+          address.setLabel("HomeTown");
+          address.setState("UP");
+          address.setZipcode("261505");
+          addresses.add(address);
+          address.setUser(user);
+          user.setAddresses(addresses);
+          user.setRoles(Arrays.asList(roleRepository.findByAuthority("ROLE_ADMIN").get()));
+          userRepository.save(user);
 
-//        Roles roles = roleRepository.findByAuthority("ROLE_ADMIN").get();
-            user.setRoles(Arrays.asList(roleRepository.findByAuthority("ROLE_ADMIN").get()));
-            userRepository.save(user);
+          // Roles role = roleRepository.findByAuthority("ROLE_ADMIN").get();
+
+           // user.setRoles(Arrays.asList(roleRepository.findByAuthority("ROLE_ADMIN").get()));
+          //  userRepository.save(user);
 
 
         }
