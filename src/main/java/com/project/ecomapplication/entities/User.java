@@ -1,14 +1,12 @@
 package com.project.ecomapplication.entities;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(name="user")
@@ -20,7 +18,6 @@ public class User {
      private Long id;
      private String email;
      private String firstName;
-     private String middleName;
      private String lastName;
      private String password;
      private Boolean isDeleted;
@@ -29,7 +26,6 @@ public class User {
      private Boolean isLocked;
      private Integer invalidAttemptCount;
      private LocalDateTime passwordUpdateDate;
-
      private String passwordResetToken;
      private LocalDateTime tokenCreationDate;
      private int failedAttempt;

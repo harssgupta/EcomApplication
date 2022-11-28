@@ -75,6 +75,7 @@ public class PublicController {
 
     @PostMapping("/register/customer")
     public ResponseEntity<?> registerAsCustomer(@Valid @RequestBody SignupCustomerDao signupCustomerDao) {
+        System.out.println("signupCustomerDao----"+signupCustomerDao);
 
         if (userRepository.existsByEmail(signupCustomerDao.getEmail())) {
             return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
@@ -91,9 +92,15 @@ public class PublicController {
         user.setIsLocked(false);
         user.setInvalidAttemptCount(0);
 
+        System.out.println("user----"+user);
+
 
         Roles roles = roleRepository.findByAuthority("ROLE_CUSTOMER").get();
+        logger.info("roles----",roles);
+
         user.setRoles(Collections.singletonList(roles));
+
+        logger.info("user after roles----",user);
 
         customerRepository.save(user);
 

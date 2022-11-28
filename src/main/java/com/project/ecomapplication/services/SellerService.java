@@ -73,7 +73,6 @@ public class SellerService {
             log.info("User exists.");
             User user = userRepository.findUserByEmail(accessToken.getUser().getEmail());
             user.setFirstName(updateSellerDto.getFirstName());
-            user.setMiddleName(updateSellerDto.getMiddleName());
             user.setLastName(updateSellerDto.getLastName());
             user.setEmail(updateSellerDto.getEmail());
             Seller seller = sellerRepository.getSellerByUserId(user.getId());
