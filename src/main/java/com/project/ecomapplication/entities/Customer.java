@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @NoArgsConstructor
-@PrimaryKeyJoinColumn(name = "userId")
+@PrimaryKeyJoinColumn(name = "user_id")
 @Table(name="customer")
 public class Customer extends User {
 

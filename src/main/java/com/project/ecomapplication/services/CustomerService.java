@@ -106,7 +106,7 @@ public class CustomerService {
             log.info("user exists");
             Address address = new Address();
             address.setUser(user);
-            address.setAddress(addAddressDto.getAddress());
+            address.setAddressLine(addAddressDto.getAddressLine());
             address.setCity(addAddressDto.getCity());
             address.setCountry(addAddressDto.getCountry());
             address.setState(addAddressDto.getState());
@@ -131,7 +131,7 @@ public class CustomerService {
         if (addressRepository.existsById(id)) {
             log.info("address exists");
             Address address = addressRepository.getById(id);
-            address.setAddressLine(addAddressDto.getAddress());
+            address.setAddressLine(addAddressDto.getAddressLine());
             address.setLabel(addAddressDto.getLabel());
             address.setZipcode(addAddressDto.getZipcode());
             address.setCountry(addAddressDto.getCountry());

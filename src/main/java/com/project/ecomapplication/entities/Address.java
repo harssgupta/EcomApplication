@@ -1,4 +1,5 @@
 package com.project.ecomapplication.entities;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ public class Address {
     private String addressLine;
     private String label;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "userID")
     private User user;

@@ -67,7 +67,7 @@ public class RegistrationService {
         userService.enableUser(confirmationToken.getUser().getEmail());
 
 
-        User user = userRepository.findUserByEmail(confirmationToken.getUser().getEmail());
+        User user = userRepository.findByEmail(confirmationToken.getUser().getEmail()).get();
         if (user != null) {
             user.setIsActive(true);
 
@@ -102,7 +102,7 @@ public class RegistrationService {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setSubject("Re-activation Link");
             mailMessage.setText("Here is your fresh activation link, it is valid for only 15 minutes.\n" +
-                    "http://localhost:8080/api/confirm?token=" + token);
+                    "http://localhost:8080/api/re-activation/customer?token=" + token);
             mailMessage.setTo(confirmationToken.getUser().getEmail());
             mailMessage.setFrom("yourharshh@gmail.com");
             Date date = new Date();
@@ -184,7 +184,7 @@ public class RegistrationService {
 
 
 
-  /*  public String buildEmail(String name, String link) {
+    public String buildEmail(String name, String link) {
         return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                 "\n" +
                 "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
@@ -321,5 +321,5 @@ public class RegistrationService {
                 "\n" +
                 "</div></div>";
     }
-} */
 }
+

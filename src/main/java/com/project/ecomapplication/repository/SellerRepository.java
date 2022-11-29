@@ -10,15 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface SellerRepository extends JpaRepository<Seller, Long> {
 
-    @Query(value = "SELECT a.companyContact from sellers a WHERE a.user_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT a.companyContact from seller a WHERE a.userd = ?1", nativeQuery = true)
     String getCompanyContactOfUserId(Long id);
 
-    @Query(value = "SELECT a.companyName from sellers a WHERE a.user_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT a.companyName from seller a WHERE a.user_id = ?1", nativeQuery = true)
     String getCompanyNameOfUserId(Long id);
 
-    @Query(value = "SELECT a.gstNumber from sellers a WHERE a.user_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT a.gstNumber from seller a WHERE a.user_id = ?1", nativeQuery = true)
     String getGstNumberOfUserId(Long id);
 
-    @Query(value = "SELECT * from sellers a WHERE a.user_id = ?1", nativeQuery = true)
+    @Query(value = "SELECT * from seller a WHERE a.user_id = ?1", nativeQuery = true)
     Seller getSellerByUserId(Long id);
 }

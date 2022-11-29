@@ -1,5 +1,6 @@
 package com.project.ecomapplication.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -32,6 +33,7 @@ public class User {
 
      //   private LocalDate passwordUpdateDate;
 
+     @JsonManagedReference
      @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
      private List<Address> addresses;
 

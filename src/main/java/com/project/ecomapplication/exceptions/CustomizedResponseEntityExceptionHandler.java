@@ -28,9 +28,11 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public ResponseEntity<Object> handleTokenExpiredException(TokenExpiredException e) {
         return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
     }
-    @Override
+   @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        return this.handleExceptionInternal(ex, (Object)null, headers, status, request);
+     return this.handleExceptionInternal(ex,ex.getBindingResult(), headers, status, request);
+
+
     }
 
 //    @ExceptionHandler(value = {InvalidEmailException.class})

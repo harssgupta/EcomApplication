@@ -39,15 +39,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
     void updateInvalidAttemptCount(Integer invalidAttemptCount, String email);
 
 
-    @Query(value = "SELECT a.id, a.firstName, a.lastName, a.email, a.isActive FROM users a WHERE a.id = (SELECT user_id from user_roles where role_id = 2)", nativeQuery = true)
+    @Query(value = "SELECT a.id, a.firstName, a.lastName, a.email, a.isActive FROM user a WHERE a.id = (SELECT userID from user_role where roleID = 2)", nativeQuery = true)
     List<Object[]> printPartialDataForCustomers();
 
-    @Query(value = "SELECT a.id, a.firstName, a.lastName, a.email, a.isActive, b.companyContact, b.companyName FROM users a, sellers b WHERE a.id = (SELECT user_id from user_roles where role_id = 3) AND b.user_id = (SELECT user_id from user_roles where role_id = 3)", nativeQuery = true)
+    @Query(value = "SELECT a.id, a.firstName, a.lastName, a.email, a.isActive, b.companyContact, b.companyName " +
+            "FROM user a, seller b " +
+            "WHERE a.id IN (SELECT userID from user_role where roleID = 3) "
+            ,
+            nativeQuery = true)
     List<Object[]> printPartialDataForSellers();
-
-    @Query("UPDATE User u SET u.failedAttempt = ?1 WHERE u.email = ?2")
-    @Modifying
-    public void updateFailedAttempts(int failAttempts, String email);
 
 }
 

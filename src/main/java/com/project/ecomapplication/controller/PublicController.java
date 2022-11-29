@@ -32,7 +32,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
 @Slf4j
@@ -84,6 +83,7 @@ public class PublicController {
         Customer user = new Customer();
         user.setFirstName(signupCustomerDao.getFirstName());
         user.setEmail(signupCustomerDao.getEmail());
+        user.setContact(signupCustomerDao.getContact());
         user.setPassword(passwordEncoder.encode(signupCustomerDao.getPassword()));
         user.setLastName(signupCustomerDao.getLastName());
         user.setIsActive(false);
@@ -110,7 +110,7 @@ public class PublicController {
 
         emailService.setToEmail(user.getEmail());
         emailService.setMessage("Click on the link to Activate Your Account \n"
-                + "127.0.0.1:8080/home/confirm/" + user.getEmail() + "/" + token);
+                + "127.0.0.1:8080/api/confirm/customer?token=" + token );
 
         logger.info("------------" + token + "-----------------");
         emailService.sendEmail();
@@ -130,6 +130,9 @@ public class PublicController {
         user.setEmail(signupSellerDao.getEmail());
         user.setPassword(passwordEncoder.encode(signupSellerDao.getPassword()));
         user.setLastName(signupSellerDao.getLastName());
+        user.setCompanyContact(signupSellerDao.getCompanyContact());
+        user.setGstNumber(signupSellerDao.getGstNumber());
+        user.setCompanyName(signupSellerDao.getCompanyName());
         user.setIsActive(false);
         user.setIsDeleted(false);
         user.setIsExpired(false);
@@ -257,11 +260,12 @@ public class PublicController {
                         "Refresh token is not in database!"));
     }
 
-    @PutMapping(path = "/confirm")
+    @PutMapping(path = "/confirm/customer")
     public String confirm(@RequestParam("token") String token) {
         return registrationService.confirmToken(token);
     }
-    @PostMapping(path = "/customer/confirm")
+
+    @PostMapping(path = "/customer")
     public String confirmByEmail(@RequestParam("email") String email) {
         return registrationService.confirmByEmail(email);
     }

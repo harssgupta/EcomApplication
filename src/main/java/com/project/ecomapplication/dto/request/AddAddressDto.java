@@ -14,7 +14,7 @@ public class AddAddressDto {
 
     @NotNull
     @NotBlank(message = "Address cannot be blank")
-    private String address;
+    private String addressLine;
 
     @NotNull
     @NotBlank(message = "City cannot be blank")

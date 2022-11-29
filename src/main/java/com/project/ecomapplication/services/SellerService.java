@@ -146,7 +146,7 @@ public class SellerService {
             if (addressRepository.existsById(id)) {
                 log.info("address exists");
                 Address address = addressRepository.getById(id);
-                address.setAddressLine(addAddressDto.getAddress());
+                address.setAddressLine(addAddressDto.getAddressLine());
                 address.setLabel(addAddressDto.getLabel());
                 address.setZipcode(addAddressDto.getZipcode());
                 address.setCountry(addAddressDto.getCountry());
@@ -158,7 +158,7 @@ public class SellerService {
             } else {
                 Address address = new Address();
                 address.setUser(user);
-                address.setAddressLine(addAddressDto.getAddress());
+                address.setAddressLine(addAddressDto.getAddressLine());
                 address.setCity(addAddressDto.getCity());
                 address.setCountry(addAddressDto.getCountry());
                 address.setState(addAddressDto.getState());

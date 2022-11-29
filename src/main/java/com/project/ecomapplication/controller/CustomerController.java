@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerController {
@@ -59,8 +59,4 @@ public class CustomerController {
         return customerService.updateMyProfile(updateCustomerDto);
     }
 
-    @PostMapping(value = "/upload-image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseEntity<?> uploadImage(@RequestParam("accessToken") String accessToken, @RequestPart("image") MultipartFile multipartFile) {
-        return customerService.uploadImage(accessToken, multipartFile);
-    }
 }
