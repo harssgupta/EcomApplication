@@ -1,6 +1,5 @@
 package com.project.ecomapplication.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 
 import javax.persistence.*;

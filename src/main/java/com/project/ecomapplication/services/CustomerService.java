@@ -59,9 +59,8 @@ public class CustomerService {
             throw new TokenExpiredException("Access Token expired!!");
         }
         User user = userRepository.findUserByEmail(token.getUser().getEmail());
-        return new ResponseEntity<>("Customer User Id: "+user.getId()+"\nCustomer First name: "+user.getFirstName()+"\nCustomer Last name: "+user.getLastName()+"\nCustomer active status: "+user.getIsActive()+"\nCustomer contact: "+customerRepository.getContactOfUserId(user.getId()), HttpStatus.OK);
+        return new ResponseEntity<>("Customer User Id: " + user.getId() + "\nCustomer First name: " + user.getFirstName() + "\nCustomer Last name: " + user.getLastName() + "\nCustomer active status: " + user.getIsActive() + "\nCustomer contact: " + customerRepository.getContactOfUserId(user.getId()), HttpStatus.OK);
     }
-
 
 
     public ResponseEntity<?> changePassword(ChangePasswordDto changePasswordDto) {
@@ -88,7 +87,7 @@ public class CustomerService {
                 log.info("Error sending mail");
             }
             return new ResponseEntity<>("Changed Password Successfully!", HttpStatus.OK);
-        } else  {
+        } else {
             log.info("Failed to change password!");
             return new ResponseEntity<>("Failed to change password!", HttpStatus.BAD_REQUEST);
         }
@@ -142,7 +141,7 @@ public class CustomerService {
             return new ResponseEntity<>("Address updated successfully.", HttpStatus.OK);
         } else {
             log.info("No address exists");
-            return new ResponseEntity<>(String.format("No address exists with address id: "+id), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(String.format("No address exists with address id: " + id), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -182,8 +181,6 @@ public class CustomerService {
     }
 
 
-
-
     public ResponseEntity<?> updateMyProfile(UpdateCustomerDto updateCustomerDto) {
         String token = updateCustomerDto.getAccessToken();
         AccessToken accessToken = accessTokenRepository.findByToken(token).orElseThrow(() -> new IllegalStateException("Invalid Access Token!"));
@@ -221,7 +218,7 @@ public class CustomerService {
         }
     }
 
-    public ResponseEntity<?> uploadImage(String accessToken, MultipartFile multipartFile) {
+   /* public ResponseEntity<?> uploadImage(String accessToken, MultipartFile multipartFile) {
         AccessToken token = accessTokenRepository.findByToken(accessToken).orElseThrow(() -> new IllegalStateException("Invalid Access Token!"));
         LocalDateTime expiredAt = token.getExpiresAt();
         if (expiredAt.isBefore(LocalDateTime.now())) {
@@ -282,4 +279,5 @@ public class CustomerService {
             return new ResponseEntity<>("Could not load the image!", HttpStatus.BAD_REQUEST);
         }
     }
+} */
 }

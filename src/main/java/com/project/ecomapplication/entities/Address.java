@@ -23,14 +23,22 @@ public class Address {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "userID")
+    @JoinColumn(name = "user_id")
     private User user;
+
+    public void setAddress(String address) {
+    }
 
     @Override
     public String toString() {
-        return "\tCity: " + city + "\n\tState: " + state + "\n\tCountry: " + country + "\n\tAddress Line: " + addressLine + "\n\tZip Code: " + zipcode;
-    }
-
-    public void setAddress(String address) {
+        return "Address{" +
+                "id=" + id +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", country='" + country + '\'' +
+                ", zipcode='" + zipcode + '\'' +
+                ", addressLine='" + addressLine + '\'' +
+                ", label='" + label + '\'' +
+                '}';
     }
 }

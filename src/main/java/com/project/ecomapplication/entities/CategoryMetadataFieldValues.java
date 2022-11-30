@@ -11,7 +11,7 @@ public class CategoryMetadataFieldValues {
 
     @SequenceGenerator(name = "category_metadata_field_values_sequence", sequenceName = "category_metadata_field_values_sequence", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "category_metadata_field_values_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)

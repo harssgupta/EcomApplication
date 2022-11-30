@@ -265,7 +265,7 @@ public class PublicController {
         return registrationService.confirmToken(token);
     }
 
-    @PostMapping(path = "/customer")
+    @PostMapping(path = "/reactivation/customer")
     public String confirmByEmail(@RequestParam("email") String email) {
         return registrationService.confirmByEmail(email);
     }

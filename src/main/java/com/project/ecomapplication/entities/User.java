@@ -46,5 +46,3 @@ public class User {
      private byte[] image;
 
 }
-
-
