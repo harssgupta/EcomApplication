@@ -2,7 +2,6 @@ package com.project.ecomapplication.controller;
 
 import com.project.ecomapplication.entities.User;
 import com.project.ecomapplication.registrationconfig.RegistrationService;
-import com.project.ecomapplication.repository.SellerRepository;
 import com.project.ecomapplication.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +17,10 @@ public class AdminController {
 
     @Autowired
     RegistrationService registrationService;
+
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    SellerRepository sellerRepository;
 
     @GetMapping("/admin-board")
     public String adminAccess()
@@ -30,20 +28,20 @@ public class AdminController {
         return "Admin Board.";
     }
 
-    @GetMapping(path = "/seller/confirm")
-    public String confirmSeller(@RequestParam("token") String token) {
-        return registrationService.confirmToken(token);
-    }
 
     @GetMapping("/user-list")
     public @ResponseBody
-    List<User> returnUsers() {
+    List<User> returnUsers()
+    {
         return userRepository.findAll();
     }
 
     @GetMapping("/customer-list")
-    public @ResponseBody List<Object[]> returnCustomers () {
-        return userRepository.printPartialDataForCustomers();
+    public @ResponseBody List<Object[]> returnCustomers ()
+    {
+        List<Object[]> list = new ArrayList<>();
+        list.addAll(userRepository.printPartialDataForCustomers());
+        return list;
     }
 
     @GetMapping("/seller-list")

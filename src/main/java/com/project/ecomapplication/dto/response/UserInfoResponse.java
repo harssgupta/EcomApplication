@@ -1,7 +1,6 @@
 package com.project.ecomapplication.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import java.util.List;
 
 @AllArgsConstructor

@@ -28,21 +28,11 @@ public class PasswordConstraintValidator implements ConstraintValidator<ValidPas
             return true;
         }
 
-//        context.disableDefaultConstraintViolation();
-//        context.buildConstraintViolationWithTemplate(
-//                        Joiner.on(",").join(validator.getMessages(result)))
-//                .addConstraintViolation();
-//        return false;
         List<String> messages = validator.getMessages(result);
-
         String messageTemplate = String.join(",", messages);
-
         context.buildConstraintViolationWithTemplate(messageTemplate)
-
                 .addConstraintViolation()
-
                 .disableDefaultConstraintViolation();
-
         return false;
     }
 }

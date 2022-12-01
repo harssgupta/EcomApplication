@@ -5,10 +5,8 @@ import com.project.ecomapplication.dto.request.ChangePasswordDto;
 import com.project.ecomapplication.dto.request.UpdateCustomerDto;
 import com.project.ecomapplication.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 
 

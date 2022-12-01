@@ -1,7 +1,6 @@
 package com.project.ecomapplication.entities;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 

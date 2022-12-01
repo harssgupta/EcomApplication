@@ -1,9 +1,7 @@
 package com.project.ecomapplication.registrationconfig.token;
 
 import com.project.ecomapplication.entities.User;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 

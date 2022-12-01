@@ -1,7 +1,5 @@
 package com.project.ecomapplication.registrationconfig.token;
 
-import com.project.ecomapplication.registrationconfig.token.ConfirmationToken;
-import com.project.ecomapplication.registrationconfig.token.ConfirmationTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;

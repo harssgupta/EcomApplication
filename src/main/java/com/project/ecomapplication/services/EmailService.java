@@ -1,7 +1,6 @@
 package com.project.ecomapplication.services;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,7 +15,6 @@ public class EmailService {
 
 
     private JavaMailSender javaMailSender;
-
     private String toEmail;
     private String subject;
     private String message;
@@ -33,7 +31,6 @@ public class EmailService {
         mailMessage.setTo(getToEmail());
         mailMessage.setSubject(getSubject());
         mailMessage.setText(getMessage());
-
         mailMessage.setFrom("yourharshh@gmail.com");
         javaMailSender.send(mailMessage);
     }

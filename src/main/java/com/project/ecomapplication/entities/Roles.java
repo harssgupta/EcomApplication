@@ -1,6 +1,6 @@
 package com.project.ecomapplication.entities;
-import lombok.*;
 
+import lombok.*;
 import javax.persistence.*;
 
 @Getter

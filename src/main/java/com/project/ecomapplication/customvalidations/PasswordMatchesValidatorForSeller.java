@@ -8,7 +8,7 @@ public class PasswordMatchesValidatorForSeller implements ConstraintValidator<Pa
 
     @Override
     public void initialize(final PasswordMatchesForSeller constraintAnnotation) {
-        //
+
     }
 
     @Override

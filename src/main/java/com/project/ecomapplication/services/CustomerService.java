@@ -3,6 +3,7 @@ package com.project.ecomapplication.services;
 import com.project.ecomapplication.dto.request.AddAddressDto;
 import com.project.ecomapplication.dto.request.ChangePasswordDto;
 import com.project.ecomapplication.dto.request.UpdateCustomerDto;
+import com.project.ecomapplication.exceptions.ObjectNotFoundException;
 import com.project.ecomapplication.exceptions.TokenExpiredException;
 import com.project.ecomapplication.entities.AccessToken;
 import com.project.ecomapplication.entities.Address;
@@ -53,7 +54,7 @@ public class CustomerService {
     HttpServletRequest request;
 
     public ResponseEntity<?> viewMyProfile(String accessToken) {
-        AccessToken token = accessTokenRepository.findByToken(accessToken).orElseThrow(() -> new IllegalStateException("Invalid Access Token!"));
+        AccessToken token = accessTokenRepository.findByToken(accessToken).orElseThrow(() -> new ObjectNotFoundException("Invalid Access Token!"));
         LocalDateTime expiredAt = token.getExpiresAt();
         if (expiredAt.isBefore(LocalDateTime.now())) {
             throw new TokenExpiredException("Access Token expired!!");

@@ -1,28 +1,19 @@
 package com.project.ecomapplication.registrationconfig;
 
-import com.project.ecomapplication.exceptions.EmailAlreadyConfirmedException;
-import com.project.ecomapplication.exceptions.TokenExpiredException;
-import com.project.ecomapplication.exceptions.InvalidTokenException;
+import com.project.ecomapplication.exceptions.*;
 import com.project.ecomapplication.entities.User;
-import com.project.ecomapplication.registrationconfig.token.ConfirmationToken;
-import com.project.ecomapplication.registrationconfig.token.ConfirmationTokenRepository;
-import com.project.ecomapplication.registrationconfig.token.ConfirmationTokenService;
+import com.project.ecomapplication.registrationconfig.token.*;
 import com.project.ecomapplication.repository.UserRepository;
 import com.project.ecomapplication.services.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailException;
-import org.springframework.mail.MailSender;
-import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.*;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional

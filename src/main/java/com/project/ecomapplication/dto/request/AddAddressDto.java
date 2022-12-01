@@ -1,9 +1,7 @@
 package com.project.ecomapplication.dto.request;
 
 import lombok.Data;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Data
 public class AddAddressDto {

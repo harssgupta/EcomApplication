@@ -8,7 +8,6 @@ public class PasswordMatchesValidatorForResetPasswordRequest implements Constrai
 
     @Override
     public void initialize(final PasswordMatchesForResetPasswordRequest constraintAnnotation) {
-        //
     }
 
     @Override

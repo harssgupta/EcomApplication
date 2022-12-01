@@ -1,7 +1,6 @@
 package com.project.ecomapplication.dto.request;
 
 import lombok.Data;
-
 import javax.validation.constraints.*;
 
 @Data

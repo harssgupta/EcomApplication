@@ -1,12 +1,8 @@
 package com.project.ecomapplication.dto;
 
-import com.project.ecomapplication.controller.PublicController;
 import com.project.ecomapplication.customvalidations.PasswordMatchesForCustomer;
 import com.project.ecomapplication.customvalidations.ValidPassword;
 import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
@@ -21,8 +17,6 @@ public class SignupCustomerDao {
     @NotNull
     @NotBlank(message = "last name cannot be empty")
     private String lastName;
-
-  //  Logger logger = LoggerFactory.getLogger(PublicController.class);
 
     @NotNull
     @Pattern(regexp="(^$|[0-9]{10})", message = "Phone number must be of 10 digits")

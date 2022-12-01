@@ -3,9 +3,8 @@ package com.project.ecomapplication.dto.request;
 import com.project.ecomapplication.customvalidations.PasswordMatchesForResetPasswordRequest;
 import com.project.ecomapplication.customvalidations.ValidPassword;
 import lombok.Data;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+
 
 @Data
 @PasswordMatchesForResetPasswordRequest

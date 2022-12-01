@@ -1,7 +1,6 @@
 package com.project.ecomapplication.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import javax.persistence.*;
 import java.time.Instant;
 
@@ -13,11 +12,14 @@ public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "refresh_token_sequence")
     private long id;
+
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
+
     @Column(nullable = false, unique = true)
     private String token;
+
     @Column(nullable = false)
     private Instant expiryDate;
 
