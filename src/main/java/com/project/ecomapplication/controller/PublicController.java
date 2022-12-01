@@ -110,7 +110,7 @@ public class PublicController {
 
         emailService.setToEmail(user.getEmail());
         emailService.setMessage("Click on the link to Activate Your Account \n"
-                + "127.0.0.1:8080/api/confirm/customer?token=" + token );
+                + "http://localhost:8080/api/confirm/customer?token=" + token );
 
         logger.info("------------" + token + "-----------------");
         emailService.sendEmail();
@@ -265,7 +265,7 @@ public class PublicController {
         return registrationService.confirmToken(token);
     }
 
-    @PostMapping(path = "/reactivation/customer")
+    @PostMapping(path = "/resendlink/customer")
     public String confirmByEmail(@RequestParam("email") String email) {
         return registrationService.confirmByEmail(email);
     }

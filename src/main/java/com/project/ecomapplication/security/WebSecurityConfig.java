@@ -70,6 +70,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/seller/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/seller/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/api/seller/**").permitAll()
+               /* .antMatchers("/customer/**").hasRole("CUSTOMER")
+                .antMatchers("/seller/**").hasRole("SELLER")
+                .anyRequest().authenticated()
+                .and()
+                .httpBasic();
+        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);*/
                 .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
                 .logoutSuccessUrl("/api/home")
                 .invalidateHttpSession(true)

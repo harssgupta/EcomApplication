@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @ControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -31,16 +34,17 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        String errorMessage = "";
-        if (ex.getFieldError() == null) {
-            errorMessage = ex.getMessage();
-        } else {
-            errorMessage = ex.getFieldError().getDefaultMessage();
-        }
+        Map<String,String> errorMap = new HashMap<>();
+        ex.getBindingResult()
+                .getFieldErrors() // returns a list of errors
+                .forEach(fieldError -> {
+                    // populating map with, field with error as key, and relevant message as value
+                    errorMap.put(fieldError.getField(), fieldError.getDefaultMessage());
 
-        return this.handleExceptionInternal(ex, errorMessage, headers, status, request);
+                });
+
+        return this.handleExceptionInternal(ex, errorMap, headers, status, request);
 
 
     }
 }
-
