@@ -4,6 +4,7 @@ import com.project.ecomapplication.dto.LoginDao;
 import com.project.ecomapplication.dto.request.TokenRefreshRequest;
 import com.project.ecomapplication.dto.SignupCustomerDao;
 import com.project.ecomapplication.dto.SignupSellerDao;
+import com.project.ecomapplication.exceptions.ObjectNotFoundException;
 import com.project.ecomapplication.exceptions.TokenRefreshException;
 import com.project.ecomapplication.entities.*;
 import com.project.ecomapplication.registrationconfig.RegistrationService;
@@ -15,6 +16,7 @@ import com.project.ecomapplication.services.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -194,7 +196,7 @@ public class PublicController {
     @PostMapping("/customer/login")
     public ResponseEntity<?> loginAsCustomer(@Valid @RequestBody LoginDao loginDao) {
 
-        User user = userRepository.findUserByEmail(loginDao.getEmail());
+        User user = userRepository.findByEmail(loginDao.getEmail()).orElseThrow(()->new ObjectNotFoundException("User Not Found"));
 
         if (userRepository.isUserActive(user.getId())) {
 

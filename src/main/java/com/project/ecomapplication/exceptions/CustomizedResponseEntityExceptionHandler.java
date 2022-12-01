@@ -19,18 +19,24 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
     @ExceptionHandler(value = {InvalidTokenException.class})
     public ResponseEntity<Object> handleTokenNotFoundException(InvalidTokenException e) {
-        return new ResponseEntity<>(e, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = {EmailAlreadyConfirmedException.class})
     public ResponseEntity<Object> handleEmailAlreadyConfirmedException(EmailAlreadyConfirmedException e) {
-        return new ResponseEntity<>(e, HttpStatus.ALREADY_REPORTED);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.ALREADY_REPORTED);
     }
 
     @ExceptionHandler(value = {TokenExpiredException.class})
     public ResponseEntity<Object> handleTokenExpiredException(TokenExpiredException e) {
-        return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(value = {ObjectNotFoundException.class})
+    public ResponseEntity<Object> handleObjectNotFound(ObjectNotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -43,8 +49,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
                 });
 
-       // return this.handleExceptionInternal(ex, errorMap, headers, status, request);
-        return new ResponseEntity<>(errorMap, headers, status);
+       return this.handleExceptionInternal(ex, errorMap, headers, status, request);
+
 
 
     }
