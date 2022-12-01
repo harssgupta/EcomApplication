@@ -260,7 +260,7 @@ public class PublicController {
                         "Refresh token is not in database!"));
     }
 
-    @PutMapping(path = "/confirm/customer")
+    @PatchMapping(path = "/confirm/customer")
     public String confirm(@RequestParam("token") String token) {
         return registrationService.confirmToken(token);
     }

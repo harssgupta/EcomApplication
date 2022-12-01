@@ -11,6 +11,7 @@ import com.project.ecomapplication.repository.UserRepository;
 import com.project.ecomapplication.services.UserDetailsServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
@@ -40,13 +41,15 @@ public class RegistrationService {
     JavaMailSender javaMailSender;
     @Autowired
     MailSender mailSender;
+    @Value("${customer.confirmation.token.expired.minutes}")
+    private Integer confirmationTokenExpiredMinutes;
 
     public String generateToken(User user) {
         String token = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken = new ConfirmationToken(
                 token,
                 LocalDateTime.now(),
-                LocalDateTime.now().plusMinutes(180),
+                LocalDateTime.now().plusMinutes(confirmationTokenExpiredMinutes),
                 user
         );
         confirmationTokenService.saveConfirmationToken(confirmationToken);

@@ -43,7 +43,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
                 });
 
-        return this.handleExceptionInternal(ex, errorMap, headers, status, request);
+       // return this.handleExceptionInternal(ex, errorMap, headers, status, request);
+        return new ResponseEntity<>(errorMap, headers, status);
 
 
     }
