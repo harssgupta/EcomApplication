@@ -3,6 +3,8 @@ package com.project.ecomapplication.controller;
 import com.project.ecomapplication.dto.request.AddAddressDto;
 import com.project.ecomapplication.dto.request.ChangePasswordDto;
 import com.project.ecomapplication.dto.request.UpdateCustomerDto;
+import com.project.ecomapplication.repository.CategoryRepository;
+import com.project.ecomapplication.services.CategoryService;
 import com.project.ecomapplication.services.CustomerService;
 import com.project.ecomapplication.services.ProfilePhotoService;
 import io.jsonwebtoken.Claims;
@@ -30,8 +32,9 @@ public class CustomerController {
 
     @Autowired
     ProfilePhotoService profilePhotoService;
+
     @Autowired
-    private PasswordEncoder passwordEncode;
+    CategoryService categoryService;
 
     @Value("${harsh.app.jwtSecret}")
     private String jwtSecret;
@@ -109,4 +112,10 @@ public class CustomerController {
         }
         return profilePhotoService.getImage(email);
     }
+    @GetMapping("/list-all-categories")
+    public ResponseEntity<?> allCategories() {
+
+        return categoryService.viewAllCategories();
+    }
+
 }

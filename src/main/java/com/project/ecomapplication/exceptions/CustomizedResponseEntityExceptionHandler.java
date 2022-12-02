@@ -30,6 +30,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     public ResponseEntity<Object> handleTokenExpiredException(TokenExpiredException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(value = {ObjectNotFoundException.class})
     public ResponseEntity<Object> handleObjectNotFound(ObjectNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
@@ -40,6 +41,13 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         return new ResponseEntity<Object>(e.getMessage(), HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(value = {CategoryNotFoundException.class})
+    public ResponseEntity<Object> categoryNotFoundException(CategoryNotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+
 
 
     @Override

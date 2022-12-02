@@ -1,13 +1,13 @@
 package com.project.ecomapplication.repository;
 
-import com.project.ecomapplication.entities.CategoryMetadataFieldValues;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
+import com.project.ecomapplication.entities.CategoryMetadataFieldValues;
 
-@Repository
-public interface CategoryMetadataFieldValuesRepository extends JpaRepository<CategoryMetadataFieldValues, Long> {
+public interface CategoryMetadataFieldValuesRepository extends
+        JpaRepository<CategoryMetadataFieldValues, Long> {
 
-    @Query(value = "SELECT * FROM category_metadata_field_values a WHERE a.category_metadata_field_id = ?1", nativeQuery = true)
-    CategoryMetadataFieldValues findByCategoryMetadataFieldId(Long id);
+    @Query(value = "SELECT * FROM category_meta_data_field_value a WHERE a.category_meta_data_field_id=?1", nativeQuery = true)
+    Optional<CategoryMetadataFieldValues> findByCategoryMetadataFieldId(Long id);
 }

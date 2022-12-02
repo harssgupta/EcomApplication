@@ -1,27 +1,29 @@
 package com.project.ecomapplication.entities;
 
-import com.project.ecomapplication.services.ListToStringConverter;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import lombok.Data;
-import javax.persistence.*;
-import java.util.Set;
 
-@Entity
 @Data
+@Entity
 public class CategoryMetadataFieldValues {
 
-    @SequenceGenerator(name = "category_metadata_field_values_sequence", sequenceName = "category_metadata_field_values_sequence", allocationSize = 1)
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @EmbeddedId
+    private CategoryCompositeKey id = new CategoryCompositeKey();
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    Category category;
+    private String value;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_metadata_field_id")
-    CategoryMetadataField categoryMetadataField;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @MapsId("categoryId")
+    private Category category;
 
-    @Convert(converter = ListToStringConverter.class)
-    private Set<String> valueList;
+    //@JsonBackReference
+    @ManyToOne
+    @MapsId("categoryMetaDataFieldId")
+    private CategoryMetadataField categoryMetadataField;
+
+
 }
