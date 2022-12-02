@@ -34,6 +34,13 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public final ResponseEntity<Object> handleForbiddenExceptionExceptions(AccessDeniedException e) {
+
+        return new ResponseEntity<Object>(e.getMessage(), HttpStatus.FORBIDDEN);
+    }
+
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String,String> errorMap = new HashMap<>();

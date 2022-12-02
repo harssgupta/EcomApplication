@@ -6,6 +6,7 @@ import com.project.ecomapplication.dto.request.UpdateSellerDto;
 import com.project.ecomapplication.services.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
@@ -18,22 +19,22 @@ public class SellerController {
     SellerService sellerService;
 
     @GetMapping("/seller-profile")
-    public ResponseEntity<?> viewSellerProfile(@RequestParam("accessToken") String accessToken) {
-        return sellerService.viewSellerProfile(accessToken);
+    public ResponseEntity<?> viewSellerProfile(Authentication authentication) {
+        return sellerService.viewSellerProfile(authentication.getName());
     }
 
     @PutMapping("/update-seller-profile")
-    public ResponseEntity<?> updateSellerProfile(@Valid @RequestBody UpdateSellerDto updateSellerDto) {
-        return sellerService.updateSellerProfile(updateSellerDto);
+    public ResponseEntity<?> updateSellerProfile(@Valid @RequestBody UpdateSellerDto updateSellerDto, Authentication authentication) {
+        return sellerService.updateSellerProfile(updateSellerDto, authentication.getName());
     }
 
     @PutMapping("/change-password")
-    public ResponseEntity<?> changeSellerPassword(@Valid @RequestBody ChangePasswordDto changePasswordDto) {
-        return sellerService.changeSellerPassword(changePasswordDto);
+    public ResponseEntity<?> changeSellerPassword(@Valid @RequestBody ChangePasswordDto changePasswordDto, Authentication authentication) {
+        return sellerService.changeSellerPassword(changePasswordDto, authentication.getName());
     }
 
     @PutMapping("/update-seller-address")
-    public ResponseEntity<?> updateSellerAddress(@RequestParam("addressId") Long id, @RequestBody AddAddressDto addAddressDto) {
-        return sellerService.updateSellerAddress(id, addAddressDto);
+    public ResponseEntity<?> updateSellerAddress(@RequestParam("addressId") Long id, @RequestBody AddAddressDto addAddressDto, Authentication authentication) {
+        return sellerService.updateSellerAddress(id, addAddressDto, authentication.getName());
     }
 }

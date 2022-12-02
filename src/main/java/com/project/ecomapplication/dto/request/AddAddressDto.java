@@ -7,10 +7,6 @@ import javax.validation.constraints.*;
 public class AddAddressDto {
 
     @NotNull
-    @NotBlank(message = "Access token cannot be blank")
-    private String accessToken;
-
-    @NotNull
     @NotBlank(message = "Address cannot be blank")
     private String addressLine;
 

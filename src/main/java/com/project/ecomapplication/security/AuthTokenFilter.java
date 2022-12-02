@@ -1,5 +1,7 @@
 package com.project.ecomapplication.security;
 
+import com.project.ecomapplication.entities.AccessToken;
+import com.project.ecomapplication.repository.AccessTokenRepository;
 import com.project.ecomapplication.services.UserDetailsServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Optional;
 
 
 public class AuthTokenFilter extends OncePerRequestFilter {
@@ -23,6 +26,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     JwtUtils jwtUtils;
     @Autowired
     UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    AccessTokenRepository accessTokenRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 
@@ -31,6 +36,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
+           Optional <AccessToken> accessToken = accessTokenRepository.findByToken(jwt);
+           if(accessToken.isPresent()){
+
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -42,7 +50,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
+            }}
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e);
         }

@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -58,35 +59,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-                .and().authorizeRequests()
-
-                .antMatchers(HttpMethod.GET, "/api/admin/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/admin/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/api/admin/**").permitAll()
-
-                .antMatchers(HttpMethod.GET, "/api/customer/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/customer/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/api/customer/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/seller/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/seller/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/api/seller/**").permitAll()
-               /* .antMatchers("/customer/**").hasRole("CUSTOMER")
-                .antMatchers("/seller/**").hasRole("SELLER")
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().authorizeRequests().antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/customer/**").hasRole("CUSTOMER")
+                .antMatchers("/api/seller/**").hasRole("SELLER")
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic();
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);*/
-                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
-                .logoutSuccessUrl("/api/home")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID");
+                .httpBasic()
+        .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
+                .logoutSuccessUrl("/api/home");
+//                .invalidateHttpSession(true)
+//                .deleteCookies("JSESSIONID");
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }
-             //   .antMatchers(HttpMethod.POST, "/api/category/**").hasRole("ADMIN")
-             //   .antMatchers(HttpMethod.PUT, "/api/category/**").hasRole("ADMIN")
-               // .antMatchers(HttpMethod.GET, "/api/category/**").hasAnyRole("ADMIN", "SELLER", "CUSTOMER")
-            //    .antMatchers(HttpMethod.POST, "/api/product/**").hasRole("SELLER")
-              //  .antMatchers(HttpMethod.DELETE, "/api/product/**").hasRole("SELLER")
-             //   .antMatchers(HttpMethod.PUT, "/api/product/update-product").hasRole("SELLER")
-

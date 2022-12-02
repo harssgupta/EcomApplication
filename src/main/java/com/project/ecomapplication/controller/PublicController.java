@@ -34,7 +34,7 @@ import java.util.Collections;
 import java.util.Date;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/auth")
 @Slf4j
 public class PublicController {
 

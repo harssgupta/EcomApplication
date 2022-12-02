@@ -15,7 +15,7 @@ public class LogoutController {
     @Autowired
     AccessTokenService accessTokenService;
 
-    @PostMapping("logout")
+    @PostMapping("/logout")
     public ResponseEntity<String> logoutUser(HttpServletRequest request) {
         String token = accessTokenService.parseJwt(request);
         if (token == null) {

@@ -3,6 +3,7 @@ package com.project.ecomapplication.services;
 import com.project.ecomapplication.dto.request.AddAddressDto;
 import com.project.ecomapplication.dto.request.ChangePasswordDto;
 import com.project.ecomapplication.dto.request.UpdateCustomerDto;
+import com.project.ecomapplication.exceptions.AccessDeniedException;
 import com.project.ecomapplication.exceptions.ObjectNotFoundException;
 import com.project.ecomapplication.exceptions.TokenExpiredException;
 import com.project.ecomapplication.entities.AccessToken;
@@ -24,6 +25,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.nio.file.Files;
@@ -53,26 +55,27 @@ public class CustomerService {
     @Autowired
     HttpServletRequest request;
 
-    public ResponseEntity<?> viewMyProfile(String accessToken) {
-        AccessToken token = accessTokenRepository.findByToken(accessToken).orElseThrow(() -> new ObjectNotFoundException("Invalid Access Token!"));
-        LocalDateTime expiredAt = token.getExpiresAt();
-        if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new TokenExpiredException("Access Token expired!!");
-        }
-        User user = userRepository.findUserByEmail(token.getUser().getEmail());
+    public ResponseEntity<?> viewMyProfile(String name) {
+//        AccessToken token = accessTokenRepository.findByToken(accessToken).orElseThrow(() -> new AccessDeniedException("Either the customer has logged out or the  token is invalid!"));
+//        LocalDateTime expiredAt = token.getExpiresAt();
+//        if (expiredAt.isBefore(LocalDateTime.now())) {
+//            throw new TokenExpiredException("Access Token expired!!");
+//        }
+        User user = userRepository.findByEmail(name)
+                .orElseThrow();
         return new ResponseEntity<>("Customer User Id: " + user.getId() + "\nCustomer First name: " + user.getFirstName() + "\nCustomer Last name: " + user.getLastName() + "\nCustomer active status: " + user.getIsActive() + "\nCustomer contact: " + customerRepository.getContactOfUserId(user.getId()), HttpStatus.OK);
     }
 
 
-    public ResponseEntity<?> changePassword(ChangePasswordDto changePasswordDto) {
-        String token = changePasswordDto.getAccessToken();
+    public ResponseEntity<?> changePassword(ChangePasswordDto changePasswordDto, String name) {
+        /*String token = changePasswordDto.getAccessToken();
         AccessToken accessToken = accessTokenRepository.findByToken(token).orElseThrow(() -> new IllegalStateException("Invalid Access Token!"));
         LocalDateTime expiredAt = accessToken.getExpiresAt();
         if (expiredAt.isBefore(LocalDateTime.now())) {
             throw new TokenExpiredException("Access Token expired!!");
-        }
-        if (userRepository.existsByEmail(accessToken.getUser().getEmail())) {
-            User user = userRepository.findUserByEmail(accessToken.getUser().getEmail());
+        }*/
+        if (userRepository.existsByEmail(name)) {
+            User user = userRepository.findUserByEmail(name);
             user.setPassword(passwordEncoder.encode(changePasswordDto.getPassword()));
             log.info("Changed password and encoded, then saved it.");
             SimpleMailMessage mailMessage = new SimpleMailMessage();
@@ -94,15 +97,16 @@ public class CustomerService {
         }
     }
 
-    public ResponseEntity<?> addNewAddress(AddAddressDto addAddressDto) {
-        String token = addAddressDto.getAccessToken();
-        AccessToken accessToken = accessTokenRepository.findByToken(token).orElseThrow(() -> new IllegalStateException("Invalid Access Token!"));
-        LocalDateTime expiredAt = accessToken.getExpiresAt();
-        if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new TokenExpiredException("Access Token expired!!");
-        }
-        if (userRepository.existsByEmail(accessToken.getUser().getEmail())) {
-            User user = userRepository.findUserByEmail(accessToken.getUser().getEmail());
+    public ResponseEntity<?> addNewAddress(AddAddressDto addAddressDto,
+                                           String name) {
+//        String token = addAddressDto.getAccessToken();
+//        AccessToken accessToken = accessTokenRepository.findByToken(token).orElseThrow(() -> new IllegalStateException("Invalid Access Token!"));
+//        LocalDateTime expiredAt = accessToken.getExpiresAt();
+//        if (expiredAt.isBefore(LocalDateTime.now())) {
+//            throw new TokenExpiredException("Access Token expired!!");
+//        }
+        if (userRepository.existsByEmail(name)) {
+            User user = userRepository.findUserByEmail(name);
             log.info("user exists");
             Address address = new Address();
             address.setUser(user);
@@ -122,12 +126,12 @@ public class CustomerService {
     }
 
     public ResponseEntity<?> updateAddress(Long id, AddAddressDto addAddressDto) {
-        String token = addAddressDto.getAccessToken();
+       /* String token = addAddressDto.getAccessToken();
         AccessToken accessToken = accessTokenRepository.findByToken(token).orElseThrow(() -> new IllegalStateException("Invalid Access Token!"));
         LocalDateTime expiredAt = accessToken.getExpiresAt();
         if (expiredAt.isBefore(LocalDateTime.now())) {
             throw new TokenExpiredException("Access Token expired!!");
-        }
+        }*/
         if (addressRepository.existsById(id)) {
             log.info("address exists");
             Address address = addressRepository.getById(id);
@@ -146,12 +150,12 @@ public class CustomerService {
         }
     }
 
-    public ResponseEntity<?> deleteAddress(String accessToken, Long id) {
-        AccessToken token = accessTokenRepository.findByToken(accessToken).orElseThrow(() -> new IllegalStateException("Invalid Access Token!"));
-        LocalDateTime expiredAt = token.getExpiresAt();
-        if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new TokenExpiredException("Access Token expired!!");
-        }
+    public ResponseEntity<?> deleteAddress(Long id) {
+//        AccessToken token = accessTokenRepository.findByToken(accessToken).orElseThrow(() -> new IllegalStateException("Invalid Access Token!"));
+//        LocalDateTime expiredAt = token.getExpiresAt();
+//        if (expiredAt.isBefore(LocalDateTime.now())) {
+//            throw new TokenExpiredException("Access Token expired!!");
+//        }
         if (addressRepository.existsById(id)) {
             log.info("Address exists.");
             addressRepository.deleteById(id);
@@ -163,15 +167,15 @@ public class CustomerService {
         }
     }
 
-    public ResponseEntity<?> viewMyAddresses(String accessToken) {
-        AccessToken token = accessTokenRepository.findByToken(accessToken).orElseThrow(() -> new IllegalStateException("Invalid Access Token!"));
+    public ResponseEntity<?> viewMyAddresses(String name) {
+       /* AccessToken token = accessTokenRepository.findByToken(accessToken).orElseThrow(() -> new IllegalStateException("Invalid Access Token!"));
         LocalDateTime expiredAt = token.getExpiresAt();
         if (expiredAt.isBefore(LocalDateTime.now())) {
             throw new TokenExpiredException("Access Token expired!!");
-        }
-        if (userRepository.existsByEmail(token.getUser().getEmail())) {
+        }*/
+        if (userRepository.existsByEmail(name)) {
             log.info("User exists!");
-            User user = userRepository.findUserByEmail(token.getUser().getEmail());
+            User user = userRepository.findUserByEmail(name);
             List<Object[]> list = addressRepository.findByUserId(user.getId());
             log.info("returning a list of objects.");
             return new ResponseEntity<>(list, HttpStatus.OK);
@@ -182,16 +186,16 @@ public class CustomerService {
     }
 
 
-    public ResponseEntity<?> updateMyProfile(UpdateCustomerDto updateCustomerDto) {
-        String token = updateCustomerDto.getAccessToken();
+    public ResponseEntity<?> updateMyProfile(UpdateCustomerDto updateCustomerDto, String name) {
+       /* String token = updateCustomerDto.getAccessToken();
         AccessToken accessToken = accessTokenRepository.findByToken(token).orElseThrow(() -> new IllegalStateException("Invalid Access Token!"));
         LocalDateTime expiredAt = accessToken.getExpiresAt();
         if (expiredAt.isBefore(LocalDateTime.now())) {
             throw new TokenExpiredException("Access Token expired!!");
-        }
-        if (userRepository.existsByEmail(accessToken.getUser().getEmail())) {
+        }*/
+        if (userRepository.existsByEmail(name)) {
             log.info("User exists.");
-            User user = userRepository.findUserByEmail(accessToken.getUser().getEmail());
+            User user = userRepository.findUserByEmail(name);
             user.setFirstName(updateCustomerDto.getFirstName());
             user.setLastName(updateCustomerDto.getLastName());
             user.setEmail(updateCustomerDto.getEmail());

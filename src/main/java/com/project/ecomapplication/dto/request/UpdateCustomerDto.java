@@ -10,9 +10,6 @@ import javax.validation.constraints.*;
 @Data
 public class UpdateCustomerDto {
 
-    @NotNull
-    @NotBlank(message = "Access Token cannot be blank")
-    private String accessToken;
 
     @NotNull
     @NotBlank(message = "First Name cannot be empty")

@@ -10,10 +10,6 @@ import javax.validation.constraints.*;
 public class ChangePasswordDto {
 
     @NotNull
-    @NotBlank(message = "Access token cannot be blank")
-    private String accessToken;
-
-    @NotNull
     @ValidPassword
     private String password;
 

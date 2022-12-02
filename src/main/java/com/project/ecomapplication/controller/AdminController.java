@@ -3,6 +3,7 @@ package com.project.ecomapplication.controller;
 import com.project.ecomapplication.entities.User;
 import com.project.ecomapplication.registrationconfig.RegistrationService;
 import com.project.ecomapplication.repository.UserRepository;
+import com.project.ecomapplication.services.AccessTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ public class AdminController {
 
     @GetMapping("/admin-board")
     public String adminAccess()
+
     {
         return "Admin Board.";
     }
