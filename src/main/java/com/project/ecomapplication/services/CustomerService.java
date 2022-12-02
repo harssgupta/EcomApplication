@@ -3,10 +3,6 @@ package com.project.ecomapplication.services;
 import com.project.ecomapplication.dto.request.AddAddressDto;
 import com.project.ecomapplication.dto.request.ChangePasswordDto;
 import com.project.ecomapplication.dto.request.UpdateCustomerDto;
-import com.project.ecomapplication.exceptions.AccessDeniedException;
-import com.project.ecomapplication.exceptions.ObjectNotFoundException;
-import com.project.ecomapplication.exceptions.TokenExpiredException;
-import com.project.ecomapplication.entities.AccessToken;
 import com.project.ecomapplication.entities.Address;
 import com.project.ecomapplication.entities.Customer;
 import com.project.ecomapplication.entities.User;
@@ -24,14 +20,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -63,7 +53,7 @@ public class CustomerService {
 //        }
         User user = userRepository.findByEmail(name)
                 .orElseThrow();
-        return new ResponseEntity<>("Customer User Id: " + user.getId() + "\nCustomer First name: " + user.getFirstName() + "\nCustomer Last name: " + user.getLastName() + "\nCustomer active status: " + user.getIsActive() + "\nCustomer contact: " + customerRepository.getContactOfUserId(user.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(customerRepository.findById(user.getId()), HttpStatus.OK);
     }
 
 

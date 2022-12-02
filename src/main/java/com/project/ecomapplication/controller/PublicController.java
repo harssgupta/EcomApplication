@@ -111,7 +111,7 @@ public class PublicController {
 
         emailService.setToEmail(user.getEmail());
         emailService.setMessage("Click on the link to Activate Your Account \n"
-                + "http://localhost:8080/api/confirm/customer?token=" + token );
+                + "http://localhost:8080/api/auth/confirm/customer?token=" + token );
 
         logger.info("------------" + token + "-----------------");
         emailService.sendEmail();
@@ -262,7 +262,7 @@ public class PublicController {
     }
 
     @PatchMapping(path = "/confirm/customer")
-    public String confirm(@RequestParam("token") String token) {
+    public String confirm(String token) {
         return registrationService.confirmToken(token);
     }
 

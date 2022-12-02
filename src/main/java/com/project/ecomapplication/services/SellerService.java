@@ -3,8 +3,7 @@ package com.project.ecomapplication.services;
 import com.project.ecomapplication.dto.request.AddAddressDto;
 import com.project.ecomapplication.dto.request.ChangePasswordDto;
 import com.project.ecomapplication.dto.request.UpdateSellerDto;
-import com.project.ecomapplication.exceptions.TokenExpiredException;
-import com.project.ecomapplication.entities.AccessToken;
+import com.project.ecomapplication.exceptions.ObjectNotFoundException;
 import com.project.ecomapplication.entities.Address;
 import com.project.ecomapplication.entities.Seller;
 import com.project.ecomapplication.entities.User;
@@ -19,7 +18,13 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.time.LocalDateTime;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Date;
 
 @Service
@@ -49,8 +54,8 @@ public class SellerService {
         if (userRepository.existsByEmail(name)) {
             log.info("User exists!");
             User user = userRepository.findUserByEmail(name);
-              log.info("returning a list of objects.");
-            return new ResponseEntity<>("Seller User Id: "+user.getId()+"\nSeller First name: "+user.getFirstName()+"\nSeller Last name: "+user.getLastName()+"\nSeller active status: "+user.getIsActive()+"\nSeller companyContact: "+sellerRepository.getCompanyContactOfUserId(user.getId())+"\nSeller companyName: "+sellerRepository.getCompanyNameOfUserId(user.getId())+"\nSeller gstNumber: "+sellerRepository.getGstNumberOfUserId(user.getId()), HttpStatus.OK);
+            log.info("returning a list of objects.");
+            return new ResponseEntity<>(sellerRepository.findById(user.getId()), HttpStatus.OK);
         } else {
             log.info("Couldn't find address related to user!!!");
             return new ResponseEntity<>("Error fetching addresses", HttpStatus.NOT_FOUND);
@@ -105,7 +110,7 @@ public class SellerService {
         if (expiredAt.isBefore(LocalDateTime.now())) {
             throw new TokenExpiredException("Access Token expired!!");
         }*/
-        if (userRepository.existsByEmail(name)){
+        if (userRepository.existsByEmail(name)) {
             User user = userRepository.findUserByEmail(name);
             user.setPassword(passwordEncoder.encode(changePasswordDto.getPassword()));
             log.info("Changed password and encoded, then saved it.");
@@ -122,7 +127,7 @@ public class SellerService {
                 log.info("Error sending mail");
             }
             return new ResponseEntity<>("Changed Password Successfully!", HttpStatus.OK);
-        } else  {
+        } else {
             log.info("Failed to change password!");
             return new ResponseEntity<>("Failed to change password!", HttpStatus.BAD_REQUEST);
         }
@@ -167,8 +172,28 @@ public class SellerService {
             }
         } else {
             log.info("No address exists");
-            return new ResponseEntity<>(String.format("No address exists with address id: "+id), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(String.format("No address exists with address id: " + id), HttpStatus.NOT_FOUND);
         }
+
+
+    }
+
+    public String uploadImage(String email, MultipartFile multipartFile) throws IOException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ObjectNotFoundException("User Not Found"));
+        String[] arr = multipartFile.getContentType().split("/");
+        Path uploadPath = Paths.get("/home/harsh/ecommerce-picture");
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            Path filePath = uploadPath.resolve(user.getId() + "." + arr[1]);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ioe) {
+            throw new IOException("Could not save file ", ioe);
+        }
+        return "Image Uploaded Successfully";
     }
 
 }
+
